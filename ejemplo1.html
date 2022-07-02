@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agora</title>
+</head>
+<body bgcolor="#A9D18E" align="center">
+    <h1>Productos de línea blanca</h1>
+    <table border="1" align="center">
+        <tr>
+            <td>
+                <img src="./Recursos/Lavadora.jpg" alt="200" width="250">
+            </td>
+            <td>
+                <img src="./Recursos/Televisor.jpg" alt="200" width="250">
+            </td>
+            <td>
+                <img src="./Recursos/Congeladora.jpg" alt="200" width="250">
+            </td>
+        </tr>
+    </table><br>
+    <form action="Agora.php" method="post">
+        <font color="white" size="5">
+        <table bgcolor="#595959" align="center">
+            <tr>
+                <td>
+                    <label for="">Usuario:</label>
+                </td>
+                <td>
+                    <input type="text" name="usua" id="">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">Producto: </label>
+                </td>
+                <td>
+                    <select name="categoria" id="">
+                        <option selected disabled>Escoger producto</option>
+                        <option value="a">Lavadora</option>
+                        <option value="b">Televisor</option>
+                        <option value="c">Congelador</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="">Cuotas: </label>
+                </td>
+                <td>
+                    <select name="categoria" id="">
+                    <option selected disabled>Escoger producto</option>
+                    <option value="a">3</option>
+                    <option value="b">6</option>
+                    <option value="c">9</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Cotizar">
+                </td>
+            </tr>
+        </font>
+    </table>
+    </form>
+</body>
+</html>
+<?php
+$db_nombre="nombre";
+$db_producto="producto";
+$db_precio="precio";
+$db_cuotas="numero_cuotas";
+$db_descuento="descuento";
+   $db_connection = mysql_connect($db_nombre, $db_producto, $db_precio);
+
+if (!$db_connection) {
+	die('No se ha podido conectar a la base de datos');
+}
+$subs_nombre = utf8_decode($_POST['Usuario']);
+$subs_producto = utf8_decode($_POST['Producto']);
+$subs_cuotas= utf8_decode($_POST['Cuotas']);
+
+$resultado=mysql_query("SELECT * FROM ".$db_table_name." WHERE Email = '".$subs_email."'", $db_connection);
+
+if (mysql_num_rows($resultado)>0)
+{
+
+header('Location: Fail.html');
+
+} else {
+	
+	$insert_value = 'INSERT INTO `' . $db_name . '`.`'.$db_table_name.'` (`Nombre` , `Apellido` , `Email`) VALUES ("' . $subs_name . '", "' . $subs_last . '", "' . $subs_email . '")';
+
+mysql_select_db($db_name, $db_connection);
+$retry_value = mysql_query($insert_value, $db_connection);
+
+if (!$retry_value) {
+   die('Error: ' . mysql_error());
+}
+	
+header('Location: Success.html');
+}
+
+mysql_close($db_connection);
+		
+?>
